@@ -1,9 +1,10 @@
 [package]
-name = "horrorGame"
+name = "storyEngine"
 version = "0.1.0"
 edition = "2021"
 
 [dependencies]
+clap = { version = "4.5.35", features = ["derive"] }
 serde = "1.0.219"
 serde_derive = "1.0.219"
 toml = "0.8.20"

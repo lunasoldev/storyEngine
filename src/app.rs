@@ -1,6 +1,7 @@
 use std::collections::HashMap;
 use std::fs;
 use std::io::{self, Write};
+use std::path::PathBuf;
 
 use crate::{engine, Scene};
 
@@ -10,12 +11,12 @@ pub struct App {
     current_id: String,
 }
 
-pub fn run() {
+pub fn run(dir: PathBuf) {
     let mut app = App {
         scenes: HashMap::new(),
         current_id: "start".to_string(),
     };
-    app.init();
+    app.init(dir);
 }
 
 impl App {
@@ -65,18 +66,16 @@ impl App {
         }
     }
 
-    fn init(&mut self) {
+    fn init(&mut self, dir: PathBuf) {
         println!("Welcome to StoryEngine, please select a story!");
 
         // Let the user choose a story
-        let story_dir = "/home/luna/Code/storyEngine/stories";
-
         let mut stories = Vec::new();
 
-        for (i, entry) in fs::read_dir(story_dir).expect("Could not read the folder!").enumerate() {
+        for (i, entry) in fs::read_dir(dir).expect("Could not read the folder!").enumerate() {
             let entry = entry.expect("");
             let path = entry.path();
-            if path.extension().map(|e| e == "story").unwrap_or(false) {
+            if path.extension().map(|e| e == "story" || e == "toml").unwrap_or(false) {
                 println!("{}: {:?}", i + 1, path.file_name().unwrap());
                 stories.push(path);
             }
